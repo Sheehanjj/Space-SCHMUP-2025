@@ -29,10 +29,10 @@ get {
 void Update() {
 	Move();
 	
-	if (bndCheck != null && !bndCheck.isOnScreen){
-		if (pos.y < bndCheck.camHeight - bndCheck.radius){
+	if (bndCheck != null && bndCheck.offDown){
+		//if (pos.y < bndCheck.camHeight - bndCheck.radius){
 			Destroy(gameObject);
-		}
+		//}
 	}
 }
 
