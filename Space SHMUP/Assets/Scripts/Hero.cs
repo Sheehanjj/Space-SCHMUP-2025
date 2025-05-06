@@ -9,8 +9,12 @@ public class Hero : MonoBehaviour {
 	public float speed = 30;
 	public float rollMult = -45;
 	public float pitchMult = 30;
+	public float gameRestartDelay = 2f;
+	public GameObject projectilePrefab;
+	public float projectileSpeed = 40;	
+	
 	[Header("Set Dynamically")]
-	public float _shieldLevel = 1;
+	public float _shieldLevel = 4;
 	private GameObject lastTriggerGo = null;
 
 	void Awake() {
@@ -35,6 +39,17 @@ public class Hero : MonoBehaviour {
 
 		// Rotate the ship to make it feel more dynamic // c
 		transform.rotation = Quaternion.Euler(yAxis*pitchMult,xAxis*rollMult,0);
+		
+		if (Input.GetKeyDown(KeyCode.Space)) {
+			TempFire();
+		}
+	}
+	
+	void TempFire(){
+		GameObject projGO = Instantiate<GameObject>(projectilePrefab);
+		projGO.transform.position = transform.position;
+		Rigidbody rigidB = projGO.GetComponent<Rigidbody>();
+		rigidB.velocity = Vector3.up * projectileSpeed;
 	}
 	
 	void OnTriggerEnter(Collider other){
@@ -65,6 +80,7 @@ public class Hero : MonoBehaviour {
 			 // If the shield is going to be set to less than zero
 			if (value < 0) { // c
 				Destroy(this.gameObject);
+				Main.S.DelayedRestart(gameRestartDelay);
 			}
 		}
 	}	

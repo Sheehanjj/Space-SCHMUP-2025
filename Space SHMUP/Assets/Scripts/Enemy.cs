@@ -9,7 +9,7 @@ public float fireRate = 0.3f; // Seconds/shot (Unused)
 public float health = 10;
 public int score = 100; // Points earned for destroying this
 
-private BoundsCheck bndCheck;
+protected BoundsCheck bndCheck;
 
 void Awake(){
 	bndCheck = GetComponent<BoundsCheck>();
@@ -41,4 +41,15 @@ public virtual void Move() { // b
 	tempPos.y -= speed * Time.deltaTime;
 	pos = tempPos;
 	}
+	
+void OnCollisionEnter( Collision coll){
+	GameObject otherGO = coll.gameObject;
+	if (otherGO.tag == "ProjectileHero"){
+		Destroy(otherGO);
+		Destroy(gameObject);
+	}
+	else{
+		print("Enemy hit by non-ProjectileHero: " + otherGO.name);
+	}
+}
 }
